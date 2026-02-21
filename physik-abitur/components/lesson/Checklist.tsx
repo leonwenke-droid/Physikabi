@@ -17,11 +17,14 @@ interface ChecklistProps {
 
 export function Checklist({ items, moduleId, topicId, checkedItems = {}, onItemCheck }: ChecklistProps) {
   const updateChecklistItem = useProgressStore((s) => s.updateChecklistItem);
-  const getLessonProgress = useProgressStore((s) => s.getLessonProgress);
+  const progressChecked = useProgressStore((s) => {
+    if (!moduleId || !topicId) return {};
+    const key = `${moduleId}/${topicId}`;
+    return s.progress.lessons[key]?.checklistItems ?? {};
+  });
   const [localChecked, setLocalChecked] = useState<Record<number, boolean>>({});
 
   const useProgress = moduleId != null && topicId != null;
-  const progressChecked = useProgress ? getLessonProgress(moduleId!, topicId!).checklistItems : {};
   const checkedMap: Record<number, boolean> = useProgress
     ? Object.fromEntries(items.map((_, i) => [i, progressChecked[String(i)] ?? false]))
     : onItemCheck !== undefined

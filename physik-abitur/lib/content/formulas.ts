@@ -215,7 +215,7 @@ export const formulas: FormulaEntry[] = [
     },
     context: 'Zusammenhang Frequenz und Periodendauer',
     lessonHref: '/schwingungen/harmonische-schwingungen/grundgroessen',
-    searchTerms: ['frequenz', ' periode', 'kreisfrequenz', 'omega'],
+    searchTerms: ['frequenz', 'periode', 'kreisfrequenz', 'omega'],
   },
   {
     id: 'feder-masse',

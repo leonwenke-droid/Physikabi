@@ -16,6 +16,7 @@ import {
   BookOpen,
   Menu,
   X,
+  Settings,
 } from 'lucide-react';
 import { modules } from '@/lib/content';
 import { useProgressStore } from '@/lib/progress';
@@ -80,7 +81,14 @@ function ChapterProgressBar({ done, total }: { done: number; total: number }) {
 export function Sidebar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { progress, getLessonProgress, getModuleProgress, getChapterProgress } = useProgressStore();
+  const lessons = useProgressStore((s) => s.progress.lessons);
+  const progress = useProgressStore((s) => s.progress);
+  const getLessonProgress = (modId: string, topicId: string) => {
+    const key = `${modId}/${topicId}`;
+    return lessons[key] ?? { completed: false, checklistItems: {} };
+  };
+  const getModuleProgress = useProgressStore((s) => s.getModuleProgress);
+  const getChapterProgress = useProgressStore((s) => s.getChapterProgress);
 
   const totalLessons = modules.reduce(
     (acc, m) =>
@@ -263,7 +271,7 @@ export function Sidebar() {
       <Link
         href="/formeln"
         onClick={closeMobile}
-        className={`p-3 mx-3 mb-2 rounded-lg flex items-center gap-2 text-sm transition-colors ${
+        className={`p-3 mx-3 mb-1 rounded-lg flex items-center gap-2 text-sm transition-colors ${
           pathname === '/formeln'
             ? 'bg-elektrizitaet/20 text-elektrizitaet'
             : 'text-text-dim hover:bg-surface2/50 hover:text-text'
@@ -272,6 +280,19 @@ export function Sidebar() {
       >
         <BookOpen className="w-4 h-4 shrink-0" aria-hidden />
         Formelsammlung
+      </Link>
+      <Link
+        href="/einstellungen"
+        onClick={closeMobile}
+        className={`p-3 mx-3 mb-2 rounded-lg flex items-center gap-2 text-sm transition-colors ${
+          pathname === '/einstellungen'
+            ? 'bg-elektrizitaet/20 text-elektrizitaet'
+            : 'text-text-dim hover:bg-surface2/50 hover:text-text'
+        }`}
+        aria-current={pathname === '/einstellungen' ? 'page' : undefined}
+      >
+        <Settings className="w-4 h-4 shrink-0" aria-hidden />
+        Einstellungen
       </Link>
 
       <div className="mt-auto p-3 border-t border-border">

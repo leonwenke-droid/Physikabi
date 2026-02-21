@@ -156,6 +156,7 @@ export const useProgressStore = create<{
   getTotalLessons: () => number;
   getUnlockedBadges: () => string[];
   getMilestoneMessage: (percent: number) => string | null;
+  resetProgress: () => void;
 }>()(
   persist(
     (set, get) => {
@@ -330,6 +331,10 @@ export const useProgressStore = create<{
           computeUnlockedBadges(get().progress, get().getTotalLessons()),
 
         getMilestoneMessage: (percent) => MILESTONE_MESSAGES[percent] ?? null,
+
+        resetProgress: () => {
+          set({ progress: { ...defaultProgress } });
+        },
       };
     },
     {

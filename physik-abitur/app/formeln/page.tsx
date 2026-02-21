@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { CARD_ENTER } from '@/lib/transitions';
-import { Search, BookOpen, Printer } from 'lucide-react';
+import { Search, BookOpen, Printer, FileText } from 'lucide-react';
 import katex from 'katex';
 import {
   formulas,
@@ -84,24 +84,37 @@ function FormulaCard({ formula }: { formula: FormulaEntry }) {
   );
 }
 
+type ViewMode = 'digital' | 'pdf';
+
 export default function FormelnPage() {
   const [search, setSearch] = useState('');
   const [moduleFilter, setModuleFilter] = useState<string>('');
+  const [viewMode, setViewMode] = useState<ViewMode>('digital');
 
   const filteredFormulas = useMemo(() => {
+    const normalize = (s: string) =>
+      s
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/ß/g, 'ss');
     let list = formulas;
     if (moduleFilter) {
       list = list.filter((f) => f.module === moduleFilter);
     }
     if (search.trim()) {
-      const q = search.toLowerCase().trim();
-      list = list.filter(
-        (f) =>
-          f.name.toLowerCase().includes(q) ||
-          f.formula.toLowerCase().includes(q) ||
-          f.searchTerms.some((t) => t.toLowerCase().includes(q)) ||
-          Object.keys(f.variables).some((k) => k.toLowerCase().includes(q))
-      );
+      const q = normalize(search.trim());
+      list = list.filter((f) => {
+        const match = (text: string) => normalize(text).includes(q);
+        return (
+          match(f.name) ||
+          match(f.formula) ||
+          (f.context && match(f.context)) ||
+          f.searchTerms.some((t) => match(t.trim())) ||
+          Object.keys(f.variables).some((k) => match(k)) ||
+          Object.values(f.variables).some((v) => match(v))
+        );
+      });
     }
     return list;
   }, [search, moduleFilter]);
@@ -119,9 +132,37 @@ export default function FormelnPage() {
         </h1>
         <p className="text-text-dim mb-6">
           Alle wichtigen Formeln der 5 Module. Durchsuchbar, filterbar, druckbar.
+          Zusätzlich: Offizielle Abitur-Formelsammlung (Mathematik, Chemie, Physik).
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 print:hidden">
+        <div className="flex gap-2 mb-6 print:hidden">
+          <button
+            type="button"
+            onClick={() => setViewMode('digital')}
+            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+              viewMode === 'digital'
+                ? 'bg-elektrizitaet text-white'
+                : 'bg-surface2 text-text-dim hover:text-text'
+            }`}
+          >
+            <Search className="w-4 h-4" />
+            Digitale Formeln
+          </button>
+          <button
+            type="button"
+            onClick={() => setViewMode('pdf')}
+            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+              viewMode === 'pdf'
+                ? 'bg-elektrizitaet text-white'
+                : 'bg-surface2 text-text-dim hover:text-text'
+            }`}
+          >
+            <FileText className="w-4 h-4" />
+            Offizielle PDF
+          </button>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-4 print:hidden" style={{ display: viewMode === 'digital' ? undefined : 'none' }}>
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
             <input
@@ -166,7 +207,7 @@ export default function FormelnPage() {
           </div>
         </div>
 
-        <div className="mt-4 print:hidden flex items-center gap-2">
+        <div className="mt-4 print:hidden flex items-center gap-2" style={{ display: viewMode === 'digital' ? undefined : 'none' }}>
             <button
               type="button"
               onClick={() => window.print()}
@@ -182,7 +223,43 @@ export default function FormelnPage() {
         </div>
       </header>
 
-      <div className="grid gap-4 sm:grid-cols-2 print:grid-cols-2">
+      {viewMode === 'pdf' && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="rounded-xl border border-border bg-surface2/30 overflow-hidden mb-8"
+        >
+          <div className="p-4 border-b border-border">
+            <h2 className="font-medium text-lg">
+              Mathematisch-naturwissenschaftliche Formelsammlung
+            </h2>
+            <p className="text-sm text-text-dim mt-1">
+              Gemeinsame Abituraufgabenpools der Länder — Mathematik, Chemie, Physik
+            </p>
+            <a
+              href="/formeln/formelsammlung-offiziell.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-3 text-sm text-elektrizitaet hover:underline"
+            >
+              <FileText className="w-4 h-4" />
+              PDF in neuem Tab öffnen
+            </a>
+          </div>
+          <div className="relative w-full" style={{ height: 'min(80vh, 900px)' }}>
+            <iframe
+              src="/formeln/formelsammlung-offiziell.pdf#view=FitH"
+              title="Offizielle Abitur-Formelsammlung"
+              className="w-full h-full border-0"
+            />
+          </div>
+        </motion.div>
+      )}
+
+      <div
+        className="grid gap-4 sm:grid-cols-2 print:grid-cols-2"
+        style={{ display: viewMode === 'digital' ? undefined : 'none' }}
+      >
         {filteredFormulas.map((f) => (
           <FormulaCard key={f.id} formula={f} />
         ))}

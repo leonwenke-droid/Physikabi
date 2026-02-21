@@ -46,8 +46,12 @@ export default function LessonPage() {
   const chapterSlug = params.chapterSlug as string;
   const topicSlug = params.topicSlug as string;
   const result = getTopicByPath(moduleId, chapterSlug, topicSlug);
+  const topicKey = result ? `${result.module.id}/${result.topic.id}` : null;
+  const lessonProgress = useProgressStore((s) => {
+    if (!topicKey) return { completed: false, checklistItems: {} };
+    return s.progress.lessons[topicKey] ?? { completed: false, checklistItems: {} };
+  });
   const setLastLesson = useProgressStore((s) => s.setLastLesson);
-  const getLessonProgress = useProgressStore((s) => s.getLessonProgress);
 
   useEffect(() => {
     if (result) {
@@ -68,9 +72,8 @@ export default function LessonPage() {
 
   const { module, chapter, topic } = result;
   const content = getLessonContent(moduleId, chapterSlug, topicSlug) ?? placeholderLessonContent;
-  const lessonProgress = getLessonProgress(module.id, topic.id);
   const checklistCount = content.summaryChecklist?.length ?? 3;
-  const checkedCount = Object.values(lessonProgress.checklistItems).filter(Boolean).length;
+  const checkedCount = Object.values(lessonProgress.checklistItems || {}).filter(Boolean).length;
   const progress = lessonProgress.completed
     ? 100
     : Math.round((checkedCount / checklistCount) * 90);
