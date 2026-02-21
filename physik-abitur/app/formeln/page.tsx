@@ -165,16 +165,16 @@ export default function FormelnPage() {
           </button>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 print:hidden" style={{ display: viewMode === 'digital' ? undefined : 'none' }}>
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
+        <div className="space-y-4 print:hidden" style={{ display: viewMode === 'digital' ? undefined : 'none' }}>
+          <div className="relative w-full">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
             <input
-              type="search"
-              placeholder="Formel suchen (z.B. Feldstärke, Kondensator, E=mc²)"
+              type="text"
+              placeholder="Formel suchen (z.B. Feldstärke, Kondensator)"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               autoComplete="off"
-              className="w-full pl-10 pr-4 py-3 sm:py-2.5 rounded-lg bg-surface2 border border-border text-text placeholder-text-muted focus:outline-none focus:border-elektrizitaet/50 min-h-[44px]"
+              className="w-full pl-10 pr-4 py-3 rounded-lg bg-surface2 border border-border text-text placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-elektrizitaet/50 focus:border-elektrizitaet min-h-[44px]"
               aria-label="Formeln durchsuchen"
             />
           </div>
