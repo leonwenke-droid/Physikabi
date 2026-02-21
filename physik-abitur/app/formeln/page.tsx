@@ -114,7 +114,7 @@ export default function FormelnPage() {
   return (
     <div className="formeln-page max-w-[900px] mx-auto p-4 sm:p-6 md:p-8">
       <header className="mb-8">
-        <h1 className="font-heading text-3xl font-bold mb-2">
+        <h1 className="font-heading text-2xl sm:text-3xl font-bold mb-2">
           Formelsammlung
         </h1>
         <p className="text-text-dim mb-6">
@@ -129,7 +129,7 @@ export default function FormelnPage() {
               placeholder="Formel suchen (Stichwort, Variable, …)"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-surface2 border border-border text-text placeholder-text-muted focus:outline-none focus:border-elektrizitaet/50"
+              className="w-full pl-10 pr-4 py-3 sm:py-2.5 rounded-lg bg-surface2 border border-border text-text placeholder-text-muted focus:outline-none focus:border-elektrizitaet/50 min-h-[44px]"
             />
           </div>
           <div className="flex flex-wrap gap-2">
@@ -167,10 +167,10 @@ export default function FormelnPage() {
         </div>
 
         <div className="mt-4 print:hidden flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => window.print()}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-surface2 border border-border hover:bg-surface text-sm"
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-lg bg-surface2 border border-border hover:bg-surface text-sm touch-manipulation"
             aria-label="Formelsammlung drucken"
           >
             <Printer className="w-4 h-4" />

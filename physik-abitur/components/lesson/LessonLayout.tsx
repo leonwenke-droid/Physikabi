@@ -95,7 +95,7 @@ export function LessonLayout({
           <ArrowLeft className="w-4 h-4" />
           Zurück zu {moduleTitle}
         </Link>
-        <h1 className="font-heading text-2xl font-bold mb-4">{topicTitle}</h1>
+        <h1 className="font-heading text-xl sm:text-2xl font-bold mb-4">{topicTitle}</h1>
         <ProgressBar progress={progress} color={moduleColor} showLabel />
       </header>
 
@@ -189,7 +189,7 @@ export function LessonLayout({
         >
           <Link
             href={nextHref}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all hover:gap-3"
+            className="inline-flex items-center gap-2 px-6 py-3 min-h-[44px] rounded-xl font-medium transition-all hover:gap-3 touch-manipulation"
             style={{
               backgroundColor: `${moduleColor}20`,
               color: moduleColor,

@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { getTopicByPath, getNextLesson, getLessonContent } from '@/lib/content';
 import { useProgressStore } from '@/lib/progress';
 import { LessonLayout } from '@/components/lesson/LessonLayout';
+import { InteractiveWrapper } from '@/components/layout/InteractiveWrapper';
 import { placeholderLessonContent } from '@/lib/content/lessons';
 import { SimulationFallback } from '@/components/interactive/SimulationFallback';
 
@@ -75,21 +76,24 @@ export default function LessonPage() {
     : Math.round((checkedCount / checklistCount) * 90);
   const next = getNextLesson(moduleId, chapterSlug, topicSlug);
 
+  const wrapInteractive = (node: React.ReactNode, needsWrapper: boolean) =>
+    needsWrapper ? <InteractiveWrapper>{node}</InteractiveWrapper> : node;
+
   const interactiveSlot = content.interactiveComponent
     ? content.interactiveComponent === 'OscillationSim'
-      ? <OscillationSim />
+      ? wrapInteractive(<OscillationSim />, true)
       : content.interactiveComponent === 'DecayAnimation'
-        ? <DecayAnimation />
+        ? wrapInteractive(<DecayAnimation />, true)
         : content.interactiveComponent === 'WaveInterference'
-          ? <WaveInterference />
+          ? wrapInteractive(<WaveInterference />, true)
           : content.interactiveComponent === 'DecayCurve'
-            ? <DecayCurve />
+            ? wrapInteractive(<DecayCurve />, true)
             : content.interactiveComponent === 'EnergyLevels'
-              ? <EnergyLevels />
+              ? wrapInteractive(<EnergyLevels />, true)
               : content.interactiveComponent === 'UncertaintyCalculator'
                 ? <UncertaintyCalculator />
                 : content.interactiveComponent === 'FieldLines'
-                  ? <FieldLines />
+                  ? wrapInteractive(<FieldLines />, true)
                   : (
           <div className="rounded-xl border border-border bg-surface2/50 p-6 text-center text-text-dim">
             <p className="font-medium mb-2">Interaktive Visualisierung</p>

@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Syne, DM_Mono, DM_Sans } from 'next/font/google';
 import './globals.css';
 import { Sidebar } from '@/components/layout/Sidebar';
@@ -28,6 +28,12 @@ export const metadata: Metadata = {
   description: 'Interaktive Lernplattform für das Physik-Abitur (erhöhtes Anforderungsniveau)',
 };
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -47,7 +53,7 @@ export default function RootLayout({
             </a>
             <main
               id="main-content"
-              className="flex-1 min-h-screen w-full md:ml-[280px] pt-16 md:pt-0 print:pt-0 relative z-0"
+              className="flex-1 min-h-screen w-full min-w-0 md:ml-[280px] pt-[max(4rem,calc(3rem+env(safe-area-inset-top)))] md:pt-0 print:pt-0 relative z-0"
               role="main"
               tabIndex={-1}
             >

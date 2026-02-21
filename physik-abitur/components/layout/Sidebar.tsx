@@ -106,7 +106,8 @@ export function Sidebar() {
       <button
         type="button"
         onClick={() => setMobileOpen((o) => !o)}
-        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-surface border border-border text-text hover:bg-surface2 transition-colors"
+        className="md:hidden fixed z-50 p-3 rounded-lg bg-surface border border-border text-text hover:bg-surface2 transition-colors touch-manipulation min-h-[44px] min-w-[44px] flex items-center justify-center"
+        style={{ top: 'max(1rem, env(safe-area-inset-top))', left: 'max(1rem, env(safe-area-inset-left))' }}
         aria-label={mobileOpen ? 'Navigation schließen' : 'Navigation öffnen'}
         aria-expanded={mobileOpen}
         aria-controls="sidebar-nav"
