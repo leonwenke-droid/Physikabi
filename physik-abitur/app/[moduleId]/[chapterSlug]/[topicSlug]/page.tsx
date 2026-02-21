@@ -52,7 +52,7 @@ export default function LessonPage() {
     if (result) {
       setLastLesson(result.module.id, result.topic.id);
     }
-  }, [moduleId, chapterSlug, topicSlug]);
+  }, [result, setLastLesson]);
 
   if (!result) {
     return (
