@@ -33,7 +33,7 @@ const BADGES: { id: string; emoji: string; name: string; check: (p: Progress, to
     id: 'raketenstart',
     emoji: '🚀',
     name: 'Raketenstart',
-    check: (p, total) => Object.values(p.lessons).filter((l) => l.completed).length >= 1,
+    check: (p, _total) => Object.values(p.lessons).filter((l) => l.completed).length >= 1,
   },
   {
     id: 'voltmeister',

@@ -22,8 +22,6 @@ export function ConceptCheck({ check, index = 0 }: ConceptCheckProps) {
     setShowExplanation(true);
   };
 
-  const isCorrect = answered === check.correct;
-
   return (
     <motion.div
       initial={SECTION_STAGGER.initial}

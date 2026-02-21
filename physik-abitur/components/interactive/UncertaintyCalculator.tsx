@@ -23,10 +23,9 @@ interface InputVar {
 
 function countSigFigs(x: number): number {
   if (x === 0 || !Number.isFinite(x)) return 0;
-  const s = x.toExponential().replace(/^[\d.]+e[+-]?\d+$/i, '');
   let str = Math.abs(x).toString();
   if (str.includes('e')) {
-    const [m, exp] = str.split('e');
+    const [m] = str.split('e');
     const mantissa = m.replace('.', '');
     const sig = mantissa.replace(/^0+/, '').length;
     return Math.max(1, sig);
@@ -94,7 +93,7 @@ export function UncertaintyCalculator() {
     setVars((prev) => prev.filter((v) => v.id !== id));
   };
 
-  const { result, steps, dominantIndex, relativeContributions } = useMemo(() => {
+  const { result, steps } = useMemo(() => {
     const contributions: { rel: number; index: number }[] = [];
     let resultValue = 0;
     let relUncertainty = 0;
@@ -142,7 +141,7 @@ export function UncertaintyCalculator() {
         : { rel: 0, index: -1 };
 
     const steps: { label: string; value: string; isDominant?: boolean }[] = [];
-    contributions.forEach((c, i) => {
+    contributions.forEach((c) => {
       const pct = ((c.rel / relUncertainty) * 100).toFixed(1);
       steps.push({
         label: `Δ${vars[c.index].name || `x${c.index + 1}`}/${vars[c.index].name || `x${c.index + 1}`} = ${vars[c.index].delta}/${vars[c.index].value} ≈ ${(c.rel * 100).toFixed(2)} %`,

@@ -73,7 +73,7 @@ export function EnergyLevels() {
   const computeZoomedView = useCallback((deltaY: number, startView: { min: number; max: number }) => {
     const range = startView.max - startView.min;
     const factor = 1 - ZOOM_SENSITIVITY * deltaY;
-    let newRange = Math.max(0.2, Math.min(E_GLOBAL_MAX - E_GLOBAL_MIN, range * factor));
+    const newRange = Math.max(0.2, Math.min(E_GLOBAL_MAX - E_GLOBAL_MIN, range * factor));
     let newMax = startView.max;
     let newMin = newMax - newRange;
     if (newMin < E_GLOBAL_MIN) {

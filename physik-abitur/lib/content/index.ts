@@ -20,23 +20,23 @@ export function getModule(moduleId: string): Module | undefined {
 }
 
 export function getTopic(moduleId: string, topicId: string) {
-  const module = getModule(moduleId);
-  if (!module) return undefined;
-  for (const chapter of module.chapters) {
+  const mod = getModule(moduleId);
+  if (!mod) return undefined;
+  for (const chapter of mod.chapters) {
     const topic = chapter.topics.find((t) => t.id === topicId || t.slug === topicId);
-    if (topic) return { module, chapter, topic };
+    if (topic) return { module: mod, chapter, topic };
   }
   return undefined;
 }
 
 export function getTopicByPath(moduleId: string, chapterSlug: string, topicSlug: string) {
-  const module = getModule(moduleId);
-  if (!module) return undefined;
-  const chapter = module.chapters.find((c) => c.slug === chapterSlug || c.id === chapterSlug);
+  const mod = getModule(moduleId);
+  if (!mod) return undefined;
+  const chapter = mod.chapters.find((c) => c.slug === chapterSlug || c.id === chapterSlug);
   if (!chapter) return undefined;
   const topic = chapter.topics.find((t) => t.slug === topicSlug || t.id === topicSlug);
   if (!topic) return undefined;
-  return { module, chapter, topic };
+  return { module: mod, chapter, topic };
 }
 
 import type { LessonContent } from '@/lib/types';

@@ -7,7 +7,6 @@ const BG = '#0a0a0f';
 const SURFACE = '#18181f';
 const BORDER = '#2a2a38';
 const TEXT = '#f0f0f8';
-const TEXT_DIM = '#8888aa';
 const ACCENT = '#4f9cf9';
 const FIELD_LINE = '#4f9cf9';
 const FORCE_ARROW = '#ef4444';
@@ -27,11 +26,6 @@ function pxToM(px: number, axis: 'x' | 'y'): number {
   const center = axis === 'x' ? CX : CY;
   const scale = axis === 'y' ? -1 : 1; // y nach oben positiv
   return (scale * (px - center)) / PX_PER_M;
-}
-function mToPx(m: number, axis: 'x' | 'y'): number {
-  const center = axis === 'x' ? CX : CY;
-  const scale = axis === 'y' ? -1 : 1;
-  return center + scale * m * PX_PER_M;
 }
 
 type Mode = 'homogeneous' | 'point';
@@ -517,10 +511,10 @@ export function FieldLines() {
               {(() => {
                 const xM = pxToM(probe.x, 'x');
                 const yM = pxToM(probe.y, 'y');
-                const { Ex, Ey, E } = getE(xM, yM);
+                const { Ex, Ey } = getE(xM, yM);
                 const qP = qProbe * 1e-9;
-                let Fx = qP * Ex;
-                let Fy = qP * Ey;
+                const Fx = qP * Ex;
+                const Fy = qP * Ey;
                 const F = Math.sqrt(Fx * Fx + Fy * Fy);
                 if (F < 1e-12) return null;
                 const FµN = F * 1e6;

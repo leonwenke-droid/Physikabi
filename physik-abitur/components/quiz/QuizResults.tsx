@@ -60,7 +60,7 @@ export function QuizResults({
   moduleSlug,
   chapterSlug,
   topicSlug,
-  topicTitle,
+  topicTitle: _topicTitle,
   passed,
   onRetry,
 }: QuizResultsProps) {

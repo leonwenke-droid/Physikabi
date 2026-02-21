@@ -93,7 +93,7 @@ export default function LessonPage() {
                   : (
           <div className="rounded-xl border border-border bg-surface2/50 p-6 text-center text-text-dim">
             <p className="font-medium mb-2">Interaktive Visualisierung</p>
-            <p className="text-sm">Komponente „{content.interactiveComponent}" wird implementiert.</p>
+            <p className="text-sm">Komponente &quot;{content.interactiveComponent}&quot; wird implementiert.</p>
           </div>
         )
     : undefined;

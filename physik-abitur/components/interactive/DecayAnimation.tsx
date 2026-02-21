@@ -103,7 +103,6 @@ export function DecayAnimation() {
     p5.background(BG);
 
     const cw = 340;
-    const ch = Math.round(0.68 * cw);
     const s = cw / 10;
     const load = st === 1 || st === 10;
     const unload = st === 2 || st === 20;

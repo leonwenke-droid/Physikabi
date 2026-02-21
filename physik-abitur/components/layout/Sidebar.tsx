@@ -215,7 +215,6 @@ export function Sidebar() {
                           <ChapterProgressBar done={chapterProg.done} total={chapterProg.total} />
                           <ul className="space-y-0.5 mt-1">
                             {chapter.topics.map((topic) => {
-                              const key = `${mod.id}/${topic.id}`;
                               const lessonProgress = getLessonProgress(mod.id, topic.id);
                               const topicPath = `/${mod.slug}/${chapter.slug}/${topic.slug}`;
                               const isTopicActive = pathname === topicPath;

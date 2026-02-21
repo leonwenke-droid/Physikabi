@@ -25,7 +25,6 @@ export function MultipleChoice({ question, onAnswer, disabled }: MultipleChoiceP
   };
 
   const correctIndex = question.correct ?? -1;
-  const isCorrect = selected === correctIndex;
 
   return (
     <div className="space-y-4">

@@ -7,7 +7,6 @@ const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), { ss
 
 const BG = '#0a0a0f';
 const SURFACE = '#18181f';
-const SURFACE2 = '#111118';
 const BORDER = '#2a2a38';
 const TEXT = '#f0f0f8';
 const TEXT_DIM = '#8888aa';
@@ -89,7 +88,6 @@ export function WaveInterference() {
     p5.background(BG);
 
     const cw = 700;
-    const ch = 450;
 
     const KS = {
       x: 10,

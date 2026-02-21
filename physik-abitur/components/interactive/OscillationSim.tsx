@@ -65,7 +65,7 @@ export function OscillationSim() {
   };
 
   const draw = (p5: Parameters<NonNullable<React.ComponentProps<typeof Sketch>['draw']>>[0]) => {
-    const { D, m, g, A } = paramsRef.current;
+    const { D, m, A } = paramsRef.current;
     const st = stateRef.current;
 
     const om = Math.sqrt(D / m);

@@ -12,10 +12,10 @@ import { Breadcrumb } from '@/components/layout/Breadcrumb';
 export default function ModulePage() {
   const params = useParams();
   const moduleId = params.moduleId as string;
-  const module = getModule(moduleId);
+  const mod = getModule(moduleId);
   const { getLessonProgress, getModuleProgress } = useProgressStore();
 
-  if (!module) {
+  if (!mod) {
     return (
       <div className="max-w-[780px] mx-auto p-8">
         <p className="text-text-dim">Modul nicht gefunden.</p>
@@ -26,38 +26,36 @@ export default function ModulePage() {
     );
   }
 
-  const lessonCount = module.chapters.reduce((a, c) => a + c.topics.length, 0);
-  const progress = getModuleProgress(module.id, lessonCount);
+  const lessonCount = mod.chapters.reduce((a, c) => a + c.topics.length, 0);
+  const progress = getModuleProgress(mod.id, lessonCount);
 
   return (
     <div className="max-w-[780px] mx-auto p-8">
       <Breadcrumb
         items={[
           { label: 'Dashboard', href: '/' },
-          { label: module.title },
+          { label: mod.title },
         ]}
       />
       <motion.header
         initial={SECTION_STAGGER.initial}
         animate={SECTION_STAGGER.animate}
         transition={SECTION_STAGGER.transition}
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
         className="mb-8 mt-4"
       >
         <div
           className="w-12 h-12 rounded-lg flex items-center justify-center mb-4"
-          style={{ backgroundColor: `${module.color}20` }}
+          style={{ backgroundColor: `${mod.color}20` }}
         >
-          <BookOpen className="w-6 h-6" style={{ color: module.color }} />
+          <BookOpen className="w-6 h-6" style={{ color: mod.color }} />
         </div>
-        <h1 className="font-heading text-3xl font-bold mb-2">{module.title}</h1>
-        <p className="text-text-dim mb-4">{module.description}</p>
+        <h1 className="font-heading text-3xl font-bold mb-2">{mod.title}</h1>
+        <p className="text-text-dim mb-4">{mod.description}</p>
         <div className="flex items-center gap-2">
           <div className="h-2 flex-1 max-w-xs bg-surface2 rounded-full overflow-hidden">
             <motion.div
               className="h-full rounded-full"
-              style={{ backgroundColor: module.color }}
+              style={{ backgroundColor: mod.color }}
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.5 }}
@@ -68,7 +66,7 @@ export default function ModulePage() {
       </motion.header>
 
       <div className="space-y-8">
-        {module.chapters.map((chapter, ci) => (
+        {mod.chapters.map((chapter, ci) => (
           <motion.section
             key={chapter.id}
             initial={SECTION_STAGGER.initial}
@@ -80,8 +78,8 @@ export default function ModulePage() {
             </h2>
             <ul className="space-y-2">
               {chapter.topics.map((topic) => {
-                const lessonProgress = getLessonProgress(module.id, topic.id);
-                const href = `/${module.slug}/${chapter.slug}/${topic.slug}`;
+                const lessonProgress = getLessonProgress(mod.id, topic.id);
+                const href = `/${mod.slug}/${chapter.slug}/${topic.slug}`;
                 return (
                   <li key={topic.id}>
                     <Link
