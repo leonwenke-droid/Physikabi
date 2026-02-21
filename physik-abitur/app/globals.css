@@ -1,0 +1,84 @@
+@import 'katex/dist/katex.min.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Design Tokens - Physik Abitur Theme */
+  --bg: #0a0a0f;
+  --surface: #111118;
+  --surface2: #18181f;
+  --border: #2a2a38;
+  --text: #f0f0f8;
+  --text-dim: #8888aa;
+  --text-muted: #44445a;
+  --elektrizitaet: #4f9cf9;
+  --schwingungen: #ff7a5c;
+  --quantenobjekte: #b16fff;
+  --atom: #3ecf8e;
+  --messunsicherheiten: #ffd166;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+/* KaTeX formula styling */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1rem;
+}
+
+/* Inline math in TextWithMath – passt sich dem umgebenden Text an */
+.katex {
+  font-size: 1em;
+}
+
+/* Formelsammlung – druckbares Format */
+@media print {
+  /* Sidebar und nicht druckrelevante Elemente ausblenden */
+  aside,
+  nav,
+  .print\\:hidden {
+    display: none !important;
+  }
+
+  /* Main-Content volle Breite ohne Sidebar-Offset */
+  main {
+    margin-left: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Formeln-Seite: Hintergrund für bessere Lesbarkeit */
+  .formeln-page {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+
+  .formeln-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: 1px solid #333 !important;
+    background: #fafafa !important;
+  }
+
+  .formeln-page .katex-display {
+    padding: 0.5rem 0;
+  }
+
+  /* Dunkles Theme auf Hell für Druck anpassen */
+  body {
+    background: white !important;
+    color: #1a1a1a !important;
+  }
+}

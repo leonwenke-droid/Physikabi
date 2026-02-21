@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+build/
+
+# Misc
+.DS_Store
+*.pem
+.env*.local
+.vercel
+*.tsbuildinfo
+
+# Debug
+*.log
+.cursor/

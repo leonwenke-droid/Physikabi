@@ -1,0 +1,9 @@
+{
+  "name": "physik-workspace",
+  "private": true,
+  "scripts": {
+    "dev": "cd physik-abitur && npm run dev",
+    "build": "cd physik-abitur && npm run build",
+    "start": "cd physik-abitur && npm run start"
+  }
+}
