@@ -8,17 +8,17 @@ import { MILESTONES, MILESTONE_MESSAGES } from '@/lib/progress';
 import { modules } from '@/lib/content';
 
 export function StatsPanel() {
-  const progress = useProgressStore((s) => s.progress);
+  const progress = useProgressStore((s) => s.progress) ?? { lessons: {}, quizzes: {} };
 
   const totalLessons = modules.reduce(
     (acc, m) => acc + m.chapters.reduce((a, c) => a + c.topics.length, 0),
     0
   );
-  const completedLessons = Object.values(progress.lessons).filter(
-    (l) => l.completed
+  const completedLessons = Object.values(progress?.lessons ?? {}).filter(
+    (l) => l?.completed
   ).length;
-  const quizzesPassed = Object.values(progress.quizzes).filter(
-    (q) => q.passed
+  const quizzesPassed = Object.values(progress?.quizzes ?? {}).filter(
+    (q) => q?.passed
   ).length;
   const percentComplete =
     totalLessons > 0

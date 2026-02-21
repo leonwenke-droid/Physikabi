@@ -13,6 +13,12 @@ const defaultStreak: StreakData = {
   longest: 0,
 };
 
+/** Stabile Referenz – verhindert infinite Re-Render-Loops in Zustand-Selectors */
+export const EMPTY_LESSON_PROGRESS: { completed: false; checklistItems: Record<string, boolean> } = {
+  completed: false,
+  checklistItems: {},
+};
+
 const defaultProgress: Progress = {
   lessons: {},
   quizzes: {},
@@ -299,7 +305,7 @@ export const useProgressStore = create<{
 
         getLessonProgress: (moduleId, topicId) => {
           const key = `${moduleId}/${topicId}`;
-          return get().progress.lessons[key] || { completed: false, checklistItems: {} };
+          return get().progress?.lessons?.[key] || { completed: false, checklistItems: {} };
         },
 
         getModuleProgress: (moduleId, totalLessons) => {

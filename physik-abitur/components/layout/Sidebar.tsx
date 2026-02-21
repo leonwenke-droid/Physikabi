@@ -19,7 +19,9 @@ import {
   Settings,
 } from 'lucide-react';
 import { modules } from '@/lib/content';
-import { useProgressStore } from '@/lib/progress';
+import { useProgressStore, EMPTY_LESSON_PROGRESS } from '@/lib/progress';
+
+const EMPTY_LESSONS: Record<string, unknown> = {};
 
 const moduleIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   elektrizitaet: Zap,
@@ -81,11 +83,12 @@ function ChapterProgressBar({ done, total }: { done: number; total: number }) {
 export function Sidebar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const lessons = useProgressStore((s) => s.progress.lessons);
+  const lessons = useProgressStore((s) => s.progress?.lessons ?? EMPTY_LESSONS);
   const progress = useProgressStore((s) => s.progress);
   const getLessonProgress = (modId: string, topicId: string) => {
     const key = `${modId}/${topicId}`;
-    return lessons[key] ?? { completed: false, checklistItems: {} };
+    return (lessons?.[key] as { completed?: boolean; checklistItems?: Record<string, boolean> } | undefined)
+      ?? EMPTY_LESSON_PROGRESS;
   };
   const getModuleProgress = useProgressStore((s) => s.getModuleProgress);
   const getChapterProgress = useProgressStore((s) => s.getChapterProgress);
@@ -95,7 +98,7 @@ export function Sidebar() {
       acc + m.chapters.reduce((a, c) => a + c.topics.length, 0),
     0
   );
-  const completedLessons = Object.values(progress.lessons).filter((l) => l.completed).length;
+  const completedLessons = Object.values(progress?.lessons ?? EMPTY_LESSONS).filter((l) => (l as { completed?: boolean })?.completed).length;
   const overallProgress = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
 
   const closeMobile = () => setMobileOpen(false);

@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { getTopicByPath, getNextLesson, getLessonContent } from '@/lib/content';
-import { useProgressStore } from '@/lib/progress';
+import { useProgressStore, EMPTY_LESSON_PROGRESS } from '@/lib/progress';
 import { LessonLayout } from '@/components/lesson/LessonLayout';
 import { InteractiveWrapper } from '@/components/layout/InteractiveWrapper';
 import { placeholderLessonContent } from '@/lib/content/lessons';
@@ -48,8 +48,8 @@ export default function LessonPage() {
   const result = getTopicByPath(moduleId, chapterSlug, topicSlug);
   const topicKey = result ? `${result.module.id}/${result.topic.id}` : null;
   const lessonProgress = useProgressStore((s) => {
-    if (!topicKey) return { completed: false, checklistItems: {} };
-    return s.progress.lessons[topicKey] ?? { completed: false, checklistItems: {} };
+    if (!topicKey) return EMPTY_LESSON_PROGRESS;
+    return s.progress?.lessons?.[topicKey] ?? EMPTY_LESSON_PROGRESS;
   });
   const setLastLesson = useProgressStore((s) => s.setLastLesson);
 

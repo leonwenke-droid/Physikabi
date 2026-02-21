@@ -7,6 +7,8 @@ import { Check, Circle } from 'lucide-react';
 import { TextWithMath } from './TextWithMath';
 import { useProgressStore } from '@/lib/progress';
 
+const EMPTY_CHECKLIST: Record<string, boolean> = {};
+
 interface ChecklistProps {
   items: string[];
   moduleId?: string;
@@ -18,9 +20,9 @@ interface ChecklistProps {
 export function Checklist({ items, moduleId, topicId, checkedItems = {}, onItemCheck }: ChecklistProps) {
   const updateChecklistItem = useProgressStore((s) => s.updateChecklistItem);
   const progressChecked = useProgressStore((s) => {
-    if (!moduleId || !topicId) return {};
+    if (!moduleId || !topicId) return EMPTY_CHECKLIST;
     const key = `${moduleId}/${topicId}`;
-    return s.progress.lessons[key]?.checklistItems ?? {};
+    return s.progress?.lessons?.[key]?.checklistItems ?? EMPTY_CHECKLIST;
   });
   const [localChecked, setLocalChecked] = useState<Record<number, boolean>>({});
 

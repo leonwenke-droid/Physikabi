@@ -92,30 +92,33 @@ export default function FormelnPage() {
   const [viewMode, setViewMode] = useState<ViewMode>('digital');
 
   const filteredFormulas = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) {
+      return moduleFilter
+        ? formulas.filter((f) => f.module === moduleFilter)
+        : formulas;
+    }
     const normalize = (s: string) =>
       s
         .toLowerCase()
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
         .replace(/ß/g, 'ss');
-    let list = formulas;
-    if (moduleFilter) {
-      list = list.filter((f) => f.module === moduleFilter);
-    }
-    if (search.trim()) {
-      const q = normalize(search.trim());
-      list = list.filter((f) => {
-        const match = (text: string) => normalize(text).includes(q);
-        return (
-          match(f.name) ||
-          match(f.formula) ||
-          (f.context && match(f.context)) ||
-          f.searchTerms.some((t) => match(t.trim())) ||
-          Object.keys(f.variables).some((k) => match(k)) ||
-          Object.values(f.variables).some((v) => match(v))
-        );
-      });
-    }
+    const qNorm = normalize(q);
+    let list = moduleFilter
+      ? formulas.filter((f) => f.module === moduleFilter)
+      : formulas;
+    list = list.filter((f) => {
+      const match = (text: string) => normalize(text).includes(qNorm);
+      return (
+        match(f.name) ||
+        match(f.formula) ||
+        (f.context != null && match(f.context)) ||
+        (f.searchTerms?.some((t) => match(t.trim())) ?? false) ||
+        Object.keys(f.variables || {}).some((k) => match(k)) ||
+        Object.values(f.variables || {}).some((v) => match(v))
+      );
+    });
     return list;
   }, [search, moduleFilter]);
 
@@ -167,10 +170,12 @@ export default function FormelnPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
             <input
               type="search"
-              placeholder="Formel suchen (Stichwort, Variable, …)"
+              placeholder="Formel suchen (z.B. Feldstärke, Kondensator, E=mc²)"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              autoComplete="off"
               className="w-full pl-10 pr-4 py-3 sm:py-2.5 rounded-lg bg-surface2 border border-border text-text placeholder-text-muted focus:outline-none focus:border-elektrizitaet/50 min-h-[44px]"
+              aria-label="Formeln durchsuchen"
             />
           </div>
           <div className="flex flex-wrap gap-2">

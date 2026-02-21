@@ -14,7 +14,7 @@ import { BadgesPanel } from '@/components/dashboard/BadgesPanel';
 export default function DashboardPage() {
   const { progress, getModuleProgress } = useProgressStore();
 
-  const lastLesson = progress.lastLesson;
+  const lastLesson = progress?.lastLesson;
   const lastLessonData = lastLesson
     ? (() => {
         const mod = modules.find((m) => m.id === lastLesson.moduleId);
